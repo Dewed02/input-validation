@@ -4,16 +4,18 @@ import bodyParser from 'body-parser';
 
 
 const app: Express = express();
-const port = 8080;
+const port = 10000;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 
 app.post('/books/new', handlers.createBook);
 app.get('/books/price', handlers.getPrice);
 
 app.post('/customers/new', handlers.createCustomer);
 app.put('/customers/address', handlers.updateCustomerAddress);
+app.get('/customers/address', handlers.getCustomerAddress);
 app.get('/customers/balance', handlers.getCustomerBalance);
+
 
 
 app.post('/orders/new', handlers.createOrder);

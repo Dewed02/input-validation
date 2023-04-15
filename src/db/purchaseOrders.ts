@@ -24,3 +24,4 @@ export const shipPo = async (pid: number): Promise<void> => {
     await chargeCustomerForPO(pid);
     await db.run(`UPDATE PurchaseOrders SET shipped = 1 WHERE id = ?`, [pid]);
 }
+

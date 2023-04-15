@@ -5,6 +5,7 @@ export {
 
 export {
     createCustomer,
+    getCustomerAddress,
     updateCustomerAddress,
     getCustomerBalance,
 } from './customers';
@@ -15,3 +16,4 @@ export {
     getOrderStatus,
     getShipmentStatus,
 } from './orders';
+

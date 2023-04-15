@@ -15,7 +15,7 @@ CREATE TABLE Customers (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     shippingAddress TEXT NOT NULL,
-    accountBalance REAL
+    accountBalance REAL NOT NULL
 );
 
 -- SQLITE has no boolean type, 1 is true, 0 false
@@ -47,7 +47,7 @@ export const connect = async (): Promise<Database<sqlite3.Database, sqlite3.Stat
             if (mustInitDb) {
                 await db.exec(schema);
             }
-            return db
+            return db;
         }).then(async (db) => await db);
 
     } catch (error) {
