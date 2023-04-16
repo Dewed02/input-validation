@@ -15,7 +15,7 @@ CREATE TABLE Customers (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     shippingAddress TEXT NOT NULL,
-    accountBalance REAL NOT NULL
+    accountBalance REAL
 );
 
 -- SQLITE has no boolean type, 1 is true, 0 false

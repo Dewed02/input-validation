@@ -7,6 +7,7 @@ export {
 export {
     createCustomer,
     getCustomerId,
+    getCustomerIDByName,
     getCustomerAddress,
     updateCustomerAddress,
     customerBalance,
