@@ -1,0 +1,7 @@
+Book created Kaguya-sama Love is War Vol 3 with author Someone from japan and price 12.99
+Customer created Derek Stuff with address 3534 Willet Dr. and balance 42
+Customer Derek Stuff balance was accessed.
+Customer Derek Stuff address updated to 3634 Willet Dr.
+Order with: Book The Rising of the Shield Hero was orderd by Customer Derek Stuff from 3634 Willet Dr.
+Order with: Book The Rising of the Shield Hero was shipped to Customer Derek Stuff from 3634 Willet Dr.
+Customer Derek Stuff balance was accessed.

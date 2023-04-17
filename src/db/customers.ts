@@ -2,6 +2,16 @@ import { connect } from './db';
 
 export const createCustomer = async (name: string, address: string, accountBalance: number): Promise<number> => {
     const db = await connect();
+    if (accountBalance < 0) {
+        throw new Error('Account balance cannot be negative');
+    }
+    let existingCustomer = await db.get('SELECT * FROM Customers WHERE name = :name AND shippingAddress = :address', {
+        ':name': name,
+        ':address': address
+    });
+    if (existingCustomer) {
+        throw new Error('Customer already exists');
+    }
     await db.run(`INSERT INTO Customers (name, shippingAddress, accountBalance) VALUES (:name, :address, :accountBalance)`, {
         ':name': name,
         ':address': address,
@@ -13,28 +23,33 @@ export const createCustomer = async (name: string, address: string, accountBalan
 export const getCustomerId = async (name: string, address: string): Promise<number> => {
     const db = await connect();
     let customerID = 0;
-    await db.each(`SELECT id FROM Customers WHERE name = :name AND shippingAddress = :address`,
-    {
+    await db.each(`SELECT id FROM Customers WHERE EXISTS (SELECT 1 FROM Customers WHERE name = :name AND shippingAddress = :address)
+     AND name = :name AND shippingAddress = :address`, {
         ':name': name,
         ':address': address
     }, (err, row) => {
         customerID = row.id;
     });
+    if (customerID === 0) {
+        throw new Error('Customer not found');
+    }
     return customerID;
 }
 
 // Not best practice but without knowing the customer's ID beforehand this allows us to find it without their address
-// This function is only used by get address function and update address function
+// This function is only used  by getAddress function and updateAddress function
 export const getCustomerIDByName = async (name: string): Promise<number> => {
     const db = await connect();
-    let result = 0;
-    await db.each(`SELECT id FROM Customers WHERE name = :name`,
-    {
+    let customerID = 0;
+    await db.each(`SELECT id FROM Customers WHERE EXISTS (SELECT 1 FROM Customers WHERE name = :name) AND name = :name`, {
         ':name': name
     }, (err, row) => {
-        result = row.id;
+        customerID = row.id;
     });
-    return result;
+    if  (customerID === 0) {
+        throw new Error('Customer not found');
+    }
+    return customerID;
 }
 
 export const getCustomerAddress = async (cid: number): Promise<string> => {
@@ -46,7 +61,6 @@ export const getCustomerAddress = async (cid: number): Promise<string> => {
     }, (err, row) => {
         address.push(row.shippingAddress);
     });
-    console.log(address);
     return address.toString();
 }
 

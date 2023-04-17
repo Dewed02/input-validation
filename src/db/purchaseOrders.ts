@@ -14,12 +14,16 @@ export const createPurchaseOrder = async (bid: number, cid: number): Promise<num
 export const getPOIdByContents = async (bid: number, cid: number): Promise<number> => {
     const db = await connect();
     let ID = 0;
-    await db.each(`SELECT id FROM PurchaseOrders WHERE bookId = :bid AND customerId = :cid`, {
+    await db.each(`SELECT id FROM PurchaseOrders WHERE EXISTS (SELECT 1 FROM PurchaseOrders WHERE bookId = :bid AND customerId = :cid) 
+    AND bookId = :bid AND customerId = :cid`, {
         ':bid': bid,
         ':cid': cid
     }, (err, row) => {
         ID = row.id;
     });
+    if (ID === 0) {
+        throw new Error('Purchase Order not found');
+    }
     return ID;
 }
 
